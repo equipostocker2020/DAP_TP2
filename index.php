@@ -45,23 +45,27 @@
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Nombre</th>";
-                                        echo "<th>Dirección</th>";
-                                        echo "<th>Sueldo</th>";
+                                        echo "<th>Fecha</th>";
+                                        echo "<th>Descripcion</th>";
+                                        echo "<th>Tiempo Asignado</th>";
+                                        echo "<th>Integrante</th>";
+                                        echo "<th>Observciones</th>";
                                         echo "<th>Acción</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['address'] . "</td>";
-                                        echo "<td>" . $row['salary'] . "</td>";
+                                        echo "<td>" . $row['ID_TAREA'] . "</td>";
+                                        echo "<td>" . $row['FECHA_ASIGNACION'] . "</td>";
+                                        echo "<td>" . $row['DESCRIPCION'] . "</td>";
+                                        echo "<td>" . $row['TIEMPO_ASIGNADO'] . "</td>";
+                                        echo "<td>" . $row['INTEGRANTE'] . "</td>";
+                                        echo "<td>" . $row['OBSERVCIONES'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='Ver' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='update.php?id=". $row['id'] ."' title='Actualizar' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Borrar' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='read.php?id=". $row['ID_TAREA'] ."' title='Ver' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='update.php?id=". $row['ID_TAREA'] ."' title='Actualizar' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete.php?id=". $row['ID_TAREA'] ."' title='Borrar' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
