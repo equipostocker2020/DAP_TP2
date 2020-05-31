@@ -3,7 +3,8 @@
 require_once "config.php";
  
 // Define variables e inicializa todas vacías
-$fecha = $descripcion = $tiempo  = $observaciones = "";
+$fecha = date("Y-m-d");
+$descripcion = $tiempo  = $observaciones = "";
 $fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = "";
  
 // Procesa datos cuando se envia el formulario
@@ -38,6 +39,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Valida observaciones
     $input_observaciones = trim($_POST["observaciones"]);
     if(empty($input_observaciones)){
+        $observaciones_err = "Por favor ingrese una observación.";     
+    }else{
         $observaciones = $input_observaciones;
     }
     
