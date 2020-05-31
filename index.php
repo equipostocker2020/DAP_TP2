@@ -48,8 +48,7 @@
                                         echo "<th>Fecha</th>";
                                         echo "<th>Descripcion</th>";
                                         echo "<th>Tiempo Asignado</th>";
-                                        echo "<th>Integrante</th>";
-                                        echo "<th>Observciones</th>";
+                                        echo "<th>Observaciones</th>";
                                         echo "<th>Acción</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -60,8 +59,7 @@
                                         echo "<td>" . $row['FECHA_ASIGNACION'] . "</td>";
                                         echo "<td>" . $row['DESCRIPCION'] . "</td>";
                                         echo "<td>" . $row['TIEMPO_ASIGNADO'] . "</td>";
-                                        echo "<td>" . $row['INTEGRANTE'] . "</td>";
-                                        echo "<td>" . $row['OBSERVCIONES'] . "</td>";
+                                        echo "<td>" . $row['OBSERVACIONES'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='read.php?id=". $row['ID_TAREA'] ."' title='Ver' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='update.php?id=". $row['ID_TAREA'] ."' title='Actualizar' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";

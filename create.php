@@ -3,12 +3,13 @@
 require_once "config.php";
  
 // Define variables e inicializa todas vacías
-$fecha = $descripcion = $tiempo = $integrante = $observaciones = "";
-$fecha_err = $descripcion_err = $tiempo_err = $integrante_err = $observaciones_err = "";
+$fecha = $descripcion = $tiempo  = $observaciones = "";
+$fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = "";
  
 // Procesa datos cuando se envia el formulario
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate fecha
+    
+    // Valida fecha
     $input_fecha = trim($_POST["fecha"]);
     if(empty($input_fecha)){
         $fecha_err = "Por favor ingrese la fecha.";
@@ -43,17 +44,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($fecha_err) && empty($descripcion_err) && empty($tiempo_err) && empty($observaciones_err)){
         // Prepare an insert statement
-        $sql = "INSERT INTO employees (FECHA_ASIGNACION, DESCRIPCION, TIEMPO_ASIGNADO, INTEGRANTE, OBSERVACIONES) VALUES (?, ?, ?, ? , ?)";
+        $sql = "INSERT INTO TAREAS (FECHA_ASIGNACION, DESCRIPCION, TIEMPO_ASIGNADO, OBSERVACIONES) VALUES (?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sss", $param_fecha, $param_descripcion, $param_tiempo, $param_itegrante, $param_observaciones);
+            mysqli_stmt_bind_param($stmt, "ssss", $param_fecha, $param_descripcion, $param_tiempo, $param_observaciones);
             
             // Set parameters
             $param_fecha = $fecha;
             $param_descripcion = $descripcion;
             $param_tiempo= $tiempo;
-            $param_integrante = $integrante;
             $param_observaciones = $observaciones;
             
             // Attempt to execute the prepared statement
@@ -113,17 +113,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="text" name="tiempo" class="form-control" value="<?php echo $tiempo; ?>">
                             <span class="help-block"><?php echo $tiempo_err;?></span>
                         </div>
-                        <div class="form-group <?php echo (!empty($integrante_err)) ? 'has-error' : ''; ?>">
-                            <label>Integrante asignado para la tarea.</label>
-                            <input type="text" name="integrante" class="form-control" value="<?php echo $integrante; ?>">
-                            <span class="help-block"><?php echo $integrante_err;?></span>
-                        </div>
                         <div class="form-group <?php echo (!empty($observaciones_err)) ? 'has-error' : ''; ?>">
                             <label>Observaciones.</label>
                             <textarea name="observaciones" class="form-control"><?php echo $observaciones; ?></textarea>
                             <span class="help-block"><?php echo $observaciones_err;?></span>
                         </div>
-                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="submit" class="btn btn-primary" value="Enviar">
                         <a href="index.php" class="btn btn-default">Cancelar</a>
                     </form>
                 </div>
