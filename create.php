@@ -29,9 +29,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Valida tiempo
     $input_tiempo = trim($_POST["tiempo"]);
     if(empty($input_tiempo)){
-        $tiempo_err = "Por favor ingrese el monto del salario del empleado.";     
-    } elseif(!ctype_digit($input_tiempo)){
-        $tiempo_err = "Por favor ingrese un valor correcto y positivo.";
+        $tiempo_err = "Por favor ingrese la cantidad de tiempo asignado.";     
     } else{
         $tiempo = $input_tiempo;
     }
@@ -65,7 +63,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 header("location: index.php");
                 exit();
             } else{
-                echo "Something went wrong. Please try again later.";
+                echo "Algo sali[o mal.";
             }
         }
          
@@ -103,22 +101,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group <?php echo (!empty($fecha_err)) ? 'has-error' : ''; ?>">
                             <label>Fecha de asignación de la tarea.</label>
-                            <input type="text" name="fecha" class="form-control" value="<?php echo $fecha; ?>">
+                            <input type="text" name="fecha" class="form-control" value="<?php echo $fecha; ?>" placeholder="Fecha">
                             <span class="help-block"><?php echo $fecha_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($descripcion_err)) ? 'has-error' : ''; ?>">
                             <label>Descripcion de la tarea.</label>
-                            <textarea name="descripcion" class="form-control"><?php echo $descripcion; ?></textarea>
+                            <textarea name="descripcion" class="form-control" placeholder="Descripcion"><?php echo $descripcion; ?></textarea>
                             <span class="help-block"><?php echo $descripcion_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($tiempo_err)) ? 'has-error' : ''; ?>">
                             <label>Tiempo asignado para la tarea.</label>
-                            <input type="text" name="tiempo" class="form-control" value="<?php echo $tiempo; ?>">
+                            <input type="text" name="tiempo" class="form-control" value="<?php echo $tiempo; ?>"placeholder="Tiempo Asignado">
                             <span class="help-block"><?php echo $tiempo_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($observaciones_err)) ? 'has-error' : ''; ?>">
                             <label>Observaciones.</label>
-                            <textarea name="observaciones" class="form-control"><?php echo $observaciones; ?></textarea>
+                            <textarea name="observaciones" class="form-control" placeholder="Observaciones"><?php echo $observaciones; ?></textarea>
                             <span class="help-block"><?php echo $observaciones_err;?></span>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Enviar">
