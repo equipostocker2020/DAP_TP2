@@ -55,7 +55,9 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     <meta charset="UTF-8">
     <title>Ver Empleado</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="styles.css">
     <style type="text/css">
+    
         .wrapper{
             width: 500px;
             margin: 0 auto;
@@ -68,7 +70,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h1>Ver Empleado</h1>
+                        <h1 class="titulo text-center">Ver Empleado</h1>
                     </div>
                     <div class="form-group">
                         <label>Nombre</label>
@@ -88,4 +90,10 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         </div>
     </div>
 </body>
+<footer class="page-footer font-small blue">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <p class="decorado">Figueras Gonzalo, Galarza Agustin, Gutierrez Marcelo</p>
+            </div>
+
+</footer>
 </html>

@@ -1,38 +1,38 @@
 <?php
-// Process delete operation after confirmation
+// Procesando el delte
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Include config file
     require_once "config.php";
     
-    // Prepare a delete statement
+    // Preparando la query para eliminar
     $sql = "DELETE FROM employees WHERE id = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
+        // Bind a la variable.
         mysqli_stmt_bind_param($stmt, "i", $param_id);
         
-        // Set parameters
+        // Seteando parametros
         $param_id = trim($_POST["id"]);
         
-        // Attempt to execute the prepared statement
+        // Intenta ejecutar
         if(mysqli_stmt_execute($stmt)){
-            // Records deleted successfully. Redirect to landing page
+            // Proceso OK, redirecciona
             header("location: index.php");
             exit();
         } else{
-            echo "Oops! Something went wrong. Please try again later.";
+            echo "Error, tuvimos un inconveniente al procesar la peticion, intente mas tarde.";
         }
     }
      
-    // Close statement
+    // cerrando statment
     mysqli_stmt_close($stmt);
     
-    // Close connection
+    // cerrando conexion
     mysqli_close($link);
 } else{
-    // Check existence of id parameter
+    // chequeando el parametro "id" exista
     if(empty(trim($_GET["id"]))){
-        // URL doesn't contain id parameter. Redirect to error page
+        // la URL no encuentra el id, redireccionando a la page del error.
         header("location: error.php");
         exit();
     }
@@ -43,6 +43,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 <head>
     <meta charset="UTF-8">
     <title>Borrar</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         .wrapper{
@@ -74,4 +75,10 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         </div>
     </div>
 </body>
+<footer class="page-footer font-small blue">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <p class="decorado">Figueras Gonzalo, Galarza Agustin, Gutierrez Marcelo</p>
+            </div>
+
+</footer>
 </html>

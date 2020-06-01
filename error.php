@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Error</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="styles.css">
     <style type="text/css">
         .wrapper{
             width: 750px;
@@ -17,14 +18,20 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h1>Invalid Request</h1>
+                        <h1 class="titulo text-center">Consulta no valida</h1>
                     </div>
                     <div class="alert alert-danger fade in">
-                        <p>Sorry, you've made an invalid request. Please <a href="index.php" class="alert-link">go back</a> and try again.</p>
+                        <p class="text-center">Enviaste una consulta no valida <a href="index.php" class="alert-link">vuelve</a> e intentalo otra vez.</p>
                     </div>
                 </div>
             </div>        
         </div>
     </div>
 </body>
+<footer class="page-footer font-small blue">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <p class="decorado">Figueras Gonzalo, Galarza Agustin, Gutierrez Marcelo</p>
+            </div>
+
+</footer>
 </html>

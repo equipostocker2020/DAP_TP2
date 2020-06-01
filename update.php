@@ -128,6 +128,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     <meta charset="UTF-8">
     <title>Actualizar Registro</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="styles.css">
     <style type="text/css">
         .wrapper{
             width: 500px;
@@ -141,7 +142,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Actualizar Registro</h2>
+                        <h2 class="titulo text-center">Actualizar Registro</h2>
                     </div>
                     <p>Edite los valores de entrada y envíe para actualizar el registro.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
@@ -169,4 +170,10 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         </div>
     </div>
 </body>
+<footer class="page-footer font-small blue">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <p class="decorado">Figueras Gonzalo, Galarza Agustin, Gutierrez Marcelo</p>
+            </div>
+
+</footer>
 </html>

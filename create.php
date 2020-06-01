@@ -3,7 +3,7 @@
 require_once "config.php";
  
 // Define variables e inicializa todas vacías
-$fecha = date("Y-m-d");
+$fecha = date("Y-d-m");
 $descripcion = $tiempo  = $observaciones = "";
 $fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = "";
  
@@ -42,36 +42,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $observaciones = $input_observaciones;
     }
     
-    // Check input errors before inserting in database
+    // Valida ninguna variable vacia para preparar la query
     if(empty($fecha_err) && empty($descripcion_err) && empty($tiempo_err) && empty($observaciones_err)){
-        // Prepare an insert statement
+        // ejecuta query
         $sql = "INSERT INTO TAREAS (FECHA_ASIGNACION, DESCRIPCION, TIEMPO_ASIGNADO, OBSERVACIONES) VALUES (?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
+            // Bind variables preparandolas como parametros
             mysqli_stmt_bind_param($stmt, "ssss", $param_fecha, $param_descripcion, $param_tiempo, $param_observaciones);
             
-            // Set parameters
+            // Set parametros
             $param_fecha = $fecha;
             $param_descripcion = $descripcion;
             $param_tiempo= $tiempo;
             $param_observaciones = $observaciones;
             
-            // Attempt to execute the prepared statement
+            // valida la ejecucion 
             if(mysqli_stmt_execute($stmt)){
-                // Records created successfully. Redirect to landing page
+                // se ejecutó y redirecciona al index.
                 header("location: index.php");
                 exit();
             } else{
-                echo "Algo sali[o mal.";
+                echo "Algo salio mal.";
             }
         }
          
-        // Close statement
+        // cierra statment
         mysqli_stmt_close($stmt);
     }
     
-    // Close connection
+    // cierra conexion
     mysqli_close($link);
 }
 ?>
@@ -82,6 +82,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <title>Cargar Tarea</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="styles.css">
     <style type="text/css">
         .wrapper{
             width: 500px;
@@ -95,7 +96,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Agregar Tarea</h2>
+                        <h2 class="titulo text-center">Agregar Tarea</h2>
                     </div>
                     <p>Complete los siguientes datos para agregar una nueva tarea.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -110,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <span class="help-block"><?php echo $descripcion_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($tiempo_err)) ? 'has-error' : ''; ?>">
-                            <label>Tiempo asignado para la tarea.</label>
+                            <label>Tiempo asignado para la tarea(en HS).</label>
                             <input type="text" name="tiempo" class="form-control" value="<?php echo $tiempo; ?>"placeholder="Tiempo Asignado">
                             <span class="help-block"><?php echo $tiempo_err;?></span>
                         </div>
@@ -127,4 +128,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
     </div>
 </body>
+<footer class="page-footer font-small blue">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <p class="decorado">Figueras Gonzalo, Galarza Agustin, Gutierrez Marcelo</p>
+            </div>
+
+</footer>
 </html>

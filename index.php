@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
     <style type="text/css">
@@ -26,18 +27,20 @@
 </head>
 <body>
     <div class="wrapper">
+    <h2 class="titulo text-center">DESARROLLO DE APLICACIONES WEB SEGUNDO TP</h2>
+    <hr>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Tareas</h2>
+                        <h2 class="pull-left ">Visualizador de Tareas.</h2>
                         <a href="create.php" class="btn btn-success pull-right">Agregar nueva tarea</a>
                     </div>
                     <?php
                     // Include config file
                     require_once "config.php";
                     
-                    // Attempt select query execution
+                    // query para traer todas las tareas
                     $sql = "SELECT * FROM TAREAS";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -47,7 +50,7 @@
                                         echo "<th>#</th>";
                                         echo "<th>Fecha</th>";
                                         echo "<th>Descripcion</th>";
-                                        echo "<th>Tiempo Asignado</th>";
+                                        echo "<th>Tiempo Asignado(hs)</th>";
                                         echo "<th>Observaciones</th>";
                                         echo "<th>Acción</th>";
                                     echo "</tr>";
@@ -69,7 +72,7 @@
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";
-                            // Free result set
+                            // seteando free_result
                             mysqli_free_result($result);
                         } else{
                             echo "<p class='lead'><em>No records were found.</em></p>";
@@ -78,7 +81,7 @@
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
  
-                    // Close connection
+                    // cerrando conexion
                     mysqli_close($link);
                     ?>
                 </div>
@@ -86,4 +89,10 @@
         </div>
     </div>
 </body>
+<footer class="page-footer font-small blue">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <p class="decorado">Figueras Gonzalo, Galarza Agustin, Gutierrez Marcelo</p>
+            </div>
+
+</footer>
 </html>
