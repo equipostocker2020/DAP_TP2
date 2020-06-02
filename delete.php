@@ -5,7 +5,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     require_once "config.php";
     
     // Preparando la query para eliminar
-    $sql = "DELETE FROM employees WHERE id = ?";
+    $sql = "DELETE FROM TAREAS WHERE ID_TAREA = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Bind a la variable.
