@@ -1,121 +1,141 @@
 <?php
-// Include config file
+// Include del archivo config 
 require_once "config.php";
  
-// Define variables and initialize with empty values
-$name = $address = $salary = "";
-$name_err = $address_err = $salary_err = "";
+// Defino variables
+$fechaAsignacion = date ("Y-m-d");
+$descripcion = $tiempoAsignado = $observaciones = "";
+$descripcion_err = $tiempoAsignado_err = $fechaAsignacion_err = "";
  
-// Processing form data when form is submitted
+// Verifica que no se repita el id para poder hacer un post
 if(isset($_POST["id"]) && !empty($_POST["id"])){
-    // Get hidden input value
+    //toma el id
     $id = $_POST["id"];
     
-    // Validate name
-    $input_name = trim($_POST["name"]);
-    if(empty($input_name)){
-        $name_err = "Por favor ingrese un nombre.";
-    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
-        $name_err = "Por favor ingrese un nombre válido.";
+
+    // Validate descripcion
+    $input_descripcion = trim($_POST["descripcion"]);
+    if(empty($input_descripcion)){
+        $descripcion_err = "Por favor ingrese una descripcion de la tarea.";     
     } else{
-        $name = $input_name;
+        $descripcion = $input_descripcion;
+    }
+       
+    // Validate iempoAsignado
+    $input_tiempoAsignado = trim($_POST["tiempoAsignado"]);
+    if(empty($input_tiempoAsignado)){
+        $tiempoAsignado_err = "Por favor ingrese el tiempo asignado (hs).";
+    //} elseif(!is_numeric ($input_tiempoAsignado )){
+      //  $tiempoAsignado_err = "Por favor ingrese el tiempo asignado (hs) valido.";
+    } else{
+        $tiempoAsignado = $input_tiempoAsignado;
     }
     
-    // Validate address address
-    $input_address = trim($_POST["address"]);
-    if(empty($input_address)){
-        $address_err = "Por favor ingrese una dirección.";     
+    // Validate fechaAsignacion
+    $input_fechaAsignacion = trim($_POST["fechaAsignacion"]);
+    if(empty($input_fechaAsignacion)){
+        $fechaAsignacion_err = "Por favor ingrese la fecha de asignacion.";     
+   // } elseif(!checkdate (int $year, int $month , int $day) ){
+     //   $fechaAsignacion_err = "Por favor ingrese una feccha de asignacion valida.";
     } else{
-        $address = $input_address;
+        $fechaAsignacion = $input_fechaAsignacion;
     }
     
-    // Validate salary
-    $input_salary = trim($_POST["salary"]);
-    if(empty($input_salary)){
-        $salary_err = "Por favor ingrese el monto del salario del empleado.";     
-    } elseif(!ctype_digit($input_salary)){
-        $salary_err = "Por favor ingrese un valor positivo y válido.";
-    } else{
-        $salary = $input_salary;
+    // Validate observaciones
+    $input_observaciones = trim($_POST["observaciones"]);
+    if(empty($input_descripcion)){
+        $observaciones = " ";
+    }else{  
+        $observaciones = $input_observaciones;
     }
-    
-    // Check input errors before inserting in database
-    if(empty($name_err) && empty($address_err) && empty($salary_err)){
-        // Prepare an update statement
-        $sql = "UPDATE employees SET name=?, address=?, salary=? WHERE id=?";
+
+
+
+    // chequea si los errores estan basios para seguir
+    if(empty($descripcion_err) && empty($tiempoAsignado_err) && empty($fechaAsignacion_err)){
+        // prepara un update statement
+        $sql = "UPDATE TAREAS SET FECHA_ASIGNACION=?, DESCRIPCION=?, TIEMPO_ASIGNADO=?, OBSERVACIONES=? WHERE ID_TAREA=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssi", $param_name, $param_address, $param_salary, $param_id);
+            // brinda variables al prepared statement porparametros
+            mysqli_stmt_bind_param($stmt, "ssssi", $param_fechaAsignacion, $param_descripcion, 
+            $param_tiempoAsignado, $param_observaciones, $param_id);
             
-            // Set parameters
-            $param_name = $name;
-            $param_address = $address;
-            $param_salary = $salary;
+            // Set parametros
+            $param_fechaAsignacion = $fechaAsignacion;
+            $param_descripcion = $descripcion;
+            $param_tiempoAsignado = $tiempoAsignado;
+            $param_observaciones = $observaciones;
             $param_id = $id;
             
-            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Records updated successfully. Redirect to landing page
+                // hace el update y redirecciona a la sieguiente pagina
                 header("location: index.php");
                 exit();
             } else{
-                echo "Something went wrong. Please try again later.";
+                echo "Algo salió mal. Por favor, inténtelo de nuevo más tarde.";
             }
         }
          
-        // Close statement
-        mysqli_stmt_close($stmt);
+        if($stmt = mysqli_prepare($link, $sql)){
+            mysqli_stmt_close($stmt);
+        } else {
+            echo "Algo está mal con la consulta:" . mysqli_error($link);
+        }
     }
     
-    // Close connection
+    // Cierra la conexion
     mysqli_close($link);
+
+
 } else{
-    // Check existence of id parameter before processing further
-    if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-        // Get URL parameter
-        $id =  trim($_GET["id"]);
+    // Chequea la existencia de los datos para hacer un get
+    if(isset($_GET["ID_TAREA"]) && !empty(trim($_GET["ID_TAREA"]))){
+        // un Get de el id de la tabla
+        $id =  trim($_GET["ID_TAREA"]);
         
-        // Prepare a select statement
-        $sql = "SELECT * FROM employees WHERE id = ?";
+        // Crea el Query select de tipo statement
+        $sql = "SELECT * FROM TAREAS WHERE id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
+            // brinda bariables al prepared statement por parametros
             mysqli_stmt_bind_param($stmt, "i", $param_id);
             
-            // Set parameters
             $param_id = $id;
             
-            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
     
                 if(mysqli_num_rows($result) == 1){
-                    /* Fetch result row as an associative array. Since the result set
-                    contains only one row, we don't need to use while loop */
+                    /*Obtener la fila de resultados como una matriz asociativa. Desde el conjunto de resultados
+                      contiene solo una fila, no necesitamos usar while loop*/
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                     
-                    // Retrieve individual field value
-                    $name = $row["name"];
-                    $address = $row["address"];
-                    $salary = $row["salary"];
+                    // Recupera valores
+                    $fechaAsignacion = $row["FECHA_ASIGNACION"];
+                    $descripcion = $row["DESCRIPCION"];
+                    $tiempoAsignado = $row["TIEMPO_ASIGNADO"];
+                    $observaciones = $row["OBSERVACIONES"];
+                    
+                   
+            
                 } else{
-                    // URL doesn't contain valid id. Redirect to error page
+                    //Si no valida el id redirecciona a la pagina error
                     header("location: error.php");
                     exit();
                 }
                 
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "¡Uy! Algo salió mal. Por favor, inténtelo de nuevo más tarde.";
             }
         }
         
-        // Close statement
+        // Cierra statement
         mysqli_stmt_close($stmt);
         
-        // Close connection
+        // Cierra connection
         mysqli_close($link);
     }  else{
-        // URL doesn't contain id parameter. Redirect to error page
+        //Si no valida el id redirecciona a la pagina error
         header("location: error.php");
         exit();
     }
@@ -146,25 +166,30 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     </div>
                     <p>Edite los valores de entrada y envíe para actualizar el registro.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                            <label>Nombre</label>
-                            <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
-                            <span class="help-block"><?php echo $name_err;?></span>
+                        <div class="form-group <?php echo (!empty($fechaAsignacion_err)) ? 'has-error' : ''; ?>">
+                            <label>Fecha Asiganación</label>
+                            <input type="date" name="fechaAsignacion" class="form-control" value="<?php echo $fechaAsignacion; ?>">
+                            <span class="help-block"><?php echo $fechaAsignacion_err;?></span>
                         </div>
-                        <div class="form-group <?php echo (!empty($address_err)) ? 'has-error' : ''; ?>">
-                            <label>Direccion</label>
-                            <textarea name="address" class="form-control"><?php echo $address; ?></textarea>
-                            <span class="help-block"><?php echo $address_err;?></span>
+                        <div class="form-group <?php echo (!empty($descripcion_err)) ? 'has-error' : ''; ?>">
+                            <label>Descripción</label>
+                            <textarea name="descripcion" class="form-control"><?php echo $descripcion; ?></textarea>
+                            <span class="help-block"><?php echo $descripcion_err;?></span>
                         </div>
-                        <div class="form-group <?php echo (!empty($salary_err)) ? 'has-error' : ''; ?>">
-                            <label>Sueldo</label>
-                            <input type="text" name="salary" class="form-control" value="<?php echo $salary; ?>">
-                            <span class="help-block"><?php echo $salary_err;?></span>
+                        <div class="form-group <?php echo (!empty($tiempoAsignado_err)) ? 'has-error' : ''; ?>">
+                            <label>Tiempo Asignado</label>
+                            <input type="text" name="tiempoAsignado" class="form-control" value="<?php echo $tiempoAsignado; ?>">
+                            <span class="help-block"><?php echo $tiempoAsignado_err;?></span>
+                        </div>
+                        <div class="form-group ">
+                            <label>Observaciones</label>
+                            <input type="text" name="observaciones" class="form-control" value="<?php echo $observaciones; ?>">
                         </div>
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Enviar">
                         <a href="index.php" class="btn btn-default">Cancelar</a>
                     </form>
+                    
                 </div>
             </div>        
         </div>
