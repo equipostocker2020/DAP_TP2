@@ -90,12 +90,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
 } else{
     // Chequea la existencia de los datos para hacer un get
-    if(isset($_GET["ID_TAREA"]) && !empty(trim($_GET["ID_TAREA"]))){
+    if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         // un Get de el id de la tabla
-        $id =  trim($_GET["ID_TAREA"]);
+        $id =  trim($_GET["id"]);
         
         // Crea el Query select de tipo statement
-        $sql = "SELECT * FROM TAREAS WHERE id = ?";
+        $sql = "SELECT * FROM TAREAS WHERE ID_TAREA = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             // brinda bariables al prepared statement por parametros
             mysqli_stmt_bind_param($stmt, "i", $param_id);
@@ -129,8 +129,11 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             }
         }
         
-        // Cierra statement
-        mysqli_stmt_close($stmt);
+        if($stmt = mysqli_prepare($link, $sql)){
+            mysqli_stmt_close($stmt);
+        } else {
+            echo "Algo está mal con la consulta:" . mysqli_error($link);
+        }
         
         // Cierra connection
         mysqli_close($link);
@@ -202,3 +205,4 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
 </footer>
 </html>
+
