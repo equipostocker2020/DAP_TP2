@@ -4,9 +4,29 @@ require_once "config.php";
  
 // Define variables e inicializa todas vacías
 $fecha = date("Y-d-m");
-$descripcion = $tiempo  = $observaciones = "";
-$fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = "";
+$descripcion = $tiempo  = $observaciones = $integrante = "";
+$fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = $integrantes_err = "";
  
+    $conexion = new mysqli("localhost", "root", "", "tp2_desa_app_web");
+    if ($conexion->connect_errno) {
+        echo "Fallo al conectar a MySQL: (" . $conexion->connect_errno . ") " . $conexion->connect_error;
+    }
+    $sql="SELECT ID_INTEGRANTE,NOMBRE from INTEGRANTES";
+    $result = $conexion->query($sql);
+
+    if ($result->num_rows > 0) //si la variable tiene al menos 1 fila entonces seguimos con el codigo
+    {
+        $combobit="";
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) 
+        {
+            $combobit .=" <option value='".$row['ID_INTEGRANTE']."'>".$row['NOMBRE']."</option>"; 
+        }
+    }
+    else
+    {
+        echo "No hubo resultados";
+    }
+
 // Procesa datos cuando se envia el formulario
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     
@@ -39,23 +59,56 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_observaciones)){
         $observaciones_err = "Por favor ingrese una observación.";     
     }else{
-        $observaciones = $input_observaciones;
+        $observaciones =  $input_observaciones;
     }
-    
+
+
+    $input_integrantes = trim($_POST["integrantes"]);
+    if(empty($input_integrantes)){
+        $integrantes_err = "Por favor ingrese un integrante.";     
+    }else{
+    }
+
+    /*
+  
+    INSERT INTO `TAREAS` (`ID_TAREA`, `FECHA_ASIGNACION`, `DESCRIPCION`, `TIEMPO_ASIGNADO`, `INTEGRANTE`, `OBSERVACIONES`) VALUES (NULL, '2020-05-31', 'De vuelta', '2', '2', 'nada');
+
+
+    $conexion = new mysqli("localhost", "root", "", "tp2_desa_app_web");
+        if ($conexion->connect_errno) {
+            echo "Fallo al conectar a MySQL: (" . $conexion->connect_errno . ") " . $conexion->connect_error;
+        }
+        $sql="SELECT ID_INTEGRANTE,NOMBRE from INTEGRANTES";
+        $result = $conexion->query($sql);
+
+        if ($result->num_rows > 0) //si la variable tiene al menos 1 fila entonces seguimos con el codigo
+        {
+            $combobit="";
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) 
+            {
+                $combobit .=" <option value='".$row['ID_INTEGRANTE']."'>".$row['NOMBRE']."</option>"; 
+            }
+        }
+        else
+        {
+            echo "No hubo resultados";
+        }*/
+            
     // Valida ninguna variable vacia para preparar la query
     if(empty($fecha_err) && empty($descripcion_err) && empty($tiempo_err) && empty($observaciones_err)){
         // ejecuta query
-        $sql = "INSERT INTO TAREAS (FECHA_ASIGNACION, DESCRIPCION, TIEMPO_ASIGNADO, OBSERVACIONES) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO TAREAS (FECHA_ASIGNACION,  DESCRIPCION, TIEMPO_ASIGNADO, INTEGRANTE,OBSERVACIONES) VALUES (?, ?, ?, ?,?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables preparandolas como parametros
-            mysqli_stmt_bind_param($stmt, "ssss", $param_fecha, $param_descripcion, $param_tiempo, $param_observaciones);
+            mysqli_stmt_bind_param($stmt, "sssss", $param_fecha, $param_descripcion, $param_tiempo, $param_integrante ,$param_observaciones);
             
             // Set parametros
             $param_fecha = $fecha;
             $param_descripcion = $descripcion;
             $param_tiempo= $tiempo;
             $param_observaciones = $observaciones;
+            $param_integrante = $combobit;
             
             // valida la ejecucion 
             if(mysqli_stmt_execute($stmt)){
@@ -117,8 +170,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
                         <div class="form-group <?php echo (!empty($observaciones_err)) ? 'has-error' : ''; ?>">
                             <label>Observaciones.</label>
-                            <textarea name="observaciones" class="form-control" placeholder="Observaciones"><?php echo $observaciones; ?></textarea>
+                            <textarea name="observaciones" class="form-control" placeholder="observaciones"><?php echo $observaciones; ?></textarea>
                             <span class="help-block"><?php echo $observaciones_err;?></span>
+                        </div>
+
+                        <div class="form-group row">
+                        <label>integrantes.</label>
+                        <select name="integrantes" class="form-control" placeholder="integrantes">
+                            <?php echo $combobit; ?>
+                        </select>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Enviar">
                         <a href="index.php" class="btn btn-default">Cancelar</a>
