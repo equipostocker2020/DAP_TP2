@@ -52,6 +52,7 @@
                                         echo "<th>Descripcion</th>";
                                         echo "<th>Tiempo Asignado(hs)</th>";
                                         echo "<th>Observaciones</th>";
+                                        echo "<th>Integrante</th>";
                                         echo "<th>Acción</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -63,6 +64,7 @@
                                         echo "<td>" . $row['DESCRIPCION'] . "</td>";
                                         echo "<td>" . $row['TIEMPO_ASIGNADO'] . "</td>";
                                         echo "<td>" . $row['OBSERVACIONES'] . "</td>";
+                                        echo "<td>" . $row['INTEGRANTE'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='read.php?id=". $row['ID_TAREA'] ."' title='Ver' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='update.php?id=". $row['ID_TAREA'] ."' title='Actualizar' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";

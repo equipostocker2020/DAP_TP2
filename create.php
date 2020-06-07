@@ -4,7 +4,7 @@ require_once "config.php";
  
 // Define variables e inicializa todas vacías
 $fecha = date("Y-d-m");
-$descripcion = $tiempo  = $observaciones = $integrante = "";
+$descripcion = $tiempo  = $observaciones = $integrantes = "";
 $fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = $integrantes_err = "";
  
     $conexion = new mysqli("localhost", "root", "", "tp2_desa_app_web");
@@ -17,10 +17,12 @@ $fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = $integrantes_
     if ($result->num_rows > 0) //si la variable tiene al menos 1 fila entonces seguimos con el codigo
     {
         $combobit="";
+        $nombre ="";
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) 
         {
             $combobit .=" <option value='".$row['ID_INTEGRANTE']."'>".$row['NOMBRE']."</option>"; 
         }
+
     }
     else
     {
@@ -67,6 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_integrantes)){
         $integrantes_err = "Por favor ingrese un integrante.";     
     }else{
+        $integrantes = $input_integrantes;
     }
 
     /*
@@ -108,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_descripcion = $descripcion;
             $param_tiempo= $tiempo;
             $param_observaciones = $observaciones;
-            $param_integrante = $combobit;
+            $param_integrante = $integrantes;
             
             // valida la ejecucion 
             if(mysqli_stmt_execute($stmt)){
