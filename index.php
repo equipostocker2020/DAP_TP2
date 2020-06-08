@@ -41,7 +41,7 @@
                     require_once "config.php";
                     
                     // query para traer todas las tareas
-                    $sql = "SELECT * FROM TAREAS";
+                    $sql = "SELECT TAREAS.ID_TAREA, TAREAS.FECHA_ASIGNACION, TAREAS.DESCRIPCION, TAREAS.TIEMPO_ASIGNADO, TAREAS.INTEGRANTE, INTEGRANTES.NOMBRE ,TAREAS.OBSERVACIONES FROM TAREAS INNER JOIN INTEGRANTES ON INTEGRANTES.ID_INTEGRANTE=TAREAS.INTEGRANTE";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -64,7 +64,7 @@
                                         echo "<td>" . $row['DESCRIPCION'] . "</td>";
                                         echo "<td>" . $row['TIEMPO_ASIGNADO'] . "</td>";
                                         echo "<td>" . $row['OBSERVACIONES'] . "</td>";
-                                        echo "<td>" . $row['INTEGRANTE'] . "</td>";
+                                        echo "<td>" . $row['NOMBRE'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='read.php?id=". $row['ID_TAREA'] ."' title='Ver' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='update.php?id=". $row['ID_TAREA'] ."' title='Actualizar' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
