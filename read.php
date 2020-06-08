@@ -5,7 +5,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     require_once "config.php";
     
     // Sentencia Select
-    $sql = "SELECT * FROM TAREAS WHERE ID_TAREA = ?";
+    $sql = "SELECT TAREAS.ID_TAREA, TAREAS.FECHA_ASIGNACION, TAREAS.DESCRIPCION, TAREAS.TIEMPO_ASIGNADO, TAREAS.INTEGRANTE, INTEGRANTES.NOMBRE ,TAREAS.OBSERVACIONES FROM TAREAS INNER JOIN INTEGRANTES ON INTEGRANTES.ID_INTEGRANTE=TAREAS.INTEGRANTE WHERE ID_TAREA = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Bind de variables para setearlas como parámetros
@@ -28,6 +28,8 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $descripcion = $row["DESCRIPCION"];
                 $tiempo = $row["TIEMPO_ASIGNADO"];
                 $observaciones = $row["OBSERVACIONES"];
+                $integrante = $row["NOMBRE"];
+
             } else{
                 // Si la URL no encuentra el ID redirecciona a la página de error.
                 header("location: error.php");
@@ -54,7 +56,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ver Empleado</title>
+    <title>Ver Tarea</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="styles.css">
     <style type="text/css">
@@ -78,7 +80,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                         <p class="form-control-static"><?php echo $row["FECHA_ASIGNACION"]; ?></p>
                     </div>
                     <div class="form-group">
-                        <label>Descripción de la tarea<./label>
+                        <label>Descripción de la tarea</label>
                         <p class="form-control-static"><?php echo $row["DESCRIPCION"]; ?></p>
                     </div>
                     <div class="form-group">
@@ -88,6 +90,10 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                     <div class="form-group">
                         <label>Observaciones.</label>
                         <p class="form-control-static"><?php echo $row["OBSERVACIONES"]; ?></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Integrante.</label>
+                        <p class="form-control-static"><?php echo $row["NOMBRE"]; ?></p>
                     </div>
                     <p><a href="index.php" class="btn btn-primary">Volver</a></p>
                 </div>
