@@ -4,9 +4,31 @@ require_once "config.php";
  
 // Defino variables
 $fechaAsignacion = date ("Y-m-d");
-$descripcion = $tiempoAsignado = $observaciones = "";
-$descripcion_err = $tiempoAsignado_err = $fechaAsignacion_err = "";
+$descripcion = $tiempoAsignado = $observaciones = $integrantes = "";
+$descripcion_err = $tiempoAsignado_err = $fechaAsignacion_err = $integrantes_err = "";
  
+
+$conexion = new mysqli("localhost", "root", "", "tp2_desa_app_web");
+if ($conexion->connect_errno) {
+    echo "Fallo al conectar a MySQL: (" . $conexion->connect_errno . ") " . $conexion->connect_error;
+}
+$sql="SELECT ID_INTEGRANTE,NOMBRE from INTEGRANTES";
+$result = $conexion->query($sql);
+
+if ($result->num_rows > 0) //si la variable tiene al menos 1 fila entonces seguimos con el codigo
+{
+    $combobit="";
+    $nombre ="";
+    while ($row = $result->fetch_array(MYSQLI_ASSOC)) 
+    {
+        $combobit .=" <option value='".$row['ID_INTEGRANTE']."'>".$row['NOMBRE']."</option>"; 
+    }
+}
+else
+{
+    echo "No hubo resultados";
+}
+
 // Verifica que no se repita el id para poder hacer un post
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     //toma el id
@@ -25,8 +47,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     $input_tiempoAsignado = trim($_POST["tiempoAsignado"]);
     if(empty($input_tiempoAsignado)){
         $tiempoAsignado_err = "Por favor ingrese el tiempo asignado (hs).";
-    //} elseif(!is_numeric ($input_tiempoAsignado )){
-      //  $tiempoAsignado_err = "Por favor ingrese el tiempo asignado (hs) valido.";
     } else{
         $tiempoAsignado = $input_tiempoAsignado;
     }
@@ -35,8 +55,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     $input_fechaAsignacion = trim($_POST["fechaAsignacion"]);
     if(empty($input_fechaAsignacion)){
         $fechaAsignacion_err = "Por favor ingrese la fecha de asignacion.";     
-   // } elseif(!checkdate (int $year, int $month , int $day) ){
-     //   $fechaAsignacion_err = "Por favor ingrese una feccha de asignacion valida.";
     } else{
         $fechaAsignacion = $input_fechaAsignacion;
     }
@@ -49,23 +67,30 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $observaciones = $input_observaciones;
     }
 
+    $input_integrantes = trim($_POST["integrantes"]);
+    if(empty($input_integrantes)){
+        $integrantes_err = "Por favor ingrese un integrante.";     
+    }else{
+        $integrantes = $input_integrantes;
+    }
 
 
     // chequea si los errores estan basios para seguir
-    if(empty($descripcion_err) && empty($tiempoAsignado_err) && empty($fechaAsignacion_err)){
+    if(empty($descripcion_err) && empty($tiempoAsignado_err) && empty($fechaAsignacion_err)&& empty($integrantes_err)){
         // prepara un update statement
-        $sql = "UPDATE TAREAS SET FECHA_ASIGNACION=?, DESCRIPCION=?, TIEMPO_ASIGNADO=?, OBSERVACIONES=? WHERE ID_TAREA=?";
+        $sql = "UPDATE TAREAS SET FECHA_ASIGNACION=?, DESCRIPCION=?, TIEMPO_ASIGNADO=?, INTEGRANTE=?,OBSERVACIONES=? WHERE ID_TAREA=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // brinda variables al prepared statement porparametros
-            mysqli_stmt_bind_param($stmt, "ssssi", $param_fechaAsignacion, $param_descripcion, 
-            $param_tiempoAsignado, $param_observaciones, $param_id);
+            mysqli_stmt_bind_param($stmt, "sssssi", $param_fechaAsignacion, $param_descripcion, 
+            $param_tiempoAsignado, $param_integrante , $param_observaciones, $param_id);
             
             // Set parametros
             $param_fechaAsignacion = $fechaAsignacion;
             $param_descripcion = $descripcion;
             $param_tiempoAsignado = $tiempoAsignado;
             $param_observaciones = $observaciones;
+            $param_integrante = $integrantes;
             $param_id = $id;
             
             if(mysqli_stmt_execute($stmt)){
@@ -115,7 +140,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $descripcion = $row["DESCRIPCION"];
                     $tiempoAsignado = $row["TIEMPO_ASIGNADO"];
                     $observaciones = $row["OBSERVACIONES"];
-                    
+                    $integrantes = $row["INTEGRANTE"];
                    
             
                 } else{
@@ -187,6 +212,13 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <div class="form-group ">
                             <label>Observaciones</label>
                             <input type="text" name="observaciones" class="form-control" value="<?php echo $observaciones; ?>">
+                        </div>
+                        <div class="form-group">
+                        <label>Integrantes</label>
+                        <select name="integrantes" class="form-control" placeholder="integrantes">
+                        <option selected="selected" disabled="disabled">Seleccione integrante...</option>
+                            <?php echo $combobit; ?>
+                        </select>
                         </div>
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Enviar">
