@@ -31,7 +31,6 @@ $fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = $integrantes_
 
 // Procesa datos cuando se envia el formulario
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    
     // Valida fecha
     $input_fecha = trim($_POST["fecha"]);
     if(empty($input_fecha)){
@@ -39,7 +38,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $fecha = $input_fecha;
     }
-    
     // Valida descripcion
     $input_descripcion= trim($_POST["descripcion"]);
     if(empty($input_descripcion)){
@@ -47,7 +45,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $descripcion = $input_descripcion;
     }
-    
     // Valida tiempo
     $input_tiempo = trim($_POST["tiempo"]);
     if(empty($input_tiempo)){
@@ -55,7 +52,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $tiempo = $input_tiempo;
     }
-
     // Valida observaciones
     $input_observaciones = trim($_POST["observaciones"]);
     if(empty($input_observaciones)){
@@ -63,31 +59,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }else{
         $observaciones =  $input_observaciones;
     }
-
     $input_integrantes = trim($_POST["integrantes"]);
     if(empty($input_integrantes)){
         $integrantes_err = "Por favor ingrese un integrante.";     
     }else{
         $integrantes = $input_integrantes;
-    }
-
-            
+    }   
     // Valida ninguna variable vacia para preparar la query
     if(empty($fecha_err) && empty($descripcion_err) && empty($tiempo_err) && empty($observaciones_err) && empty($integrantes_err)){
         // ejecuta query
         $sql = "INSERT INTO TAREAS (FECHA_ASIGNACION,  DESCRIPCION, TIEMPO_ASIGNADO, INTEGRANTE,OBSERVACIONES) VALUES (?, ?, ?, ?,?)";
-         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables preparandolas como parametros
             mysqli_stmt_bind_param($stmt, "sssss", $param_fecha, $param_descripcion, $param_tiempo, $param_integrante ,$param_observaciones);
-            
             // Set parametros
             $param_fecha = $fecha;
             $param_descripcion = $descripcion;
             $param_tiempo= $tiempo;
             $param_observaciones = $observaciones;
             $param_integrante = $integrantes;
-            
             // valida la ejecucion 
             if(mysqli_stmt_execute($stmt)){
                 // se ejecutó y redirecciona al index.
@@ -97,16 +87,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo "Algo salio mal.";
             }
         }
-         
         // cierra statment
         mysqli_stmt_close($stmt);
     }
-    
     // cierra conexion
     mysqli_close($link);
 }
 ?>
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,6 +157,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="footer-copyright text-center py-3">© 2020 Copyright:
                 <p class="decorado">Figueras Gonzalo, Galarza Agustin, Gutierrez Marcelo</p>
             </div>
-
 </footer>
 </html>

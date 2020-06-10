@@ -3,17 +3,14 @@
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Include config file
     require_once "config.php";
-    
     // Preparando la query para eliminar
     $sql = "DELETE FROM TAREAS WHERE ID_TAREA = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Bind a la variable.
         mysqli_stmt_bind_param($stmt, "i", $param_id);
-        
         // Seteando parametros
         $param_id = trim($_POST["id"]);
-        
         // Intenta ejecutar
         if(mysqli_stmt_execute($stmt)){
             // Proceso OK, redirecciona
@@ -23,10 +20,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             echo "Error, tuvimos un inconveniente al procesar la peticion, intente mas tarde.";
         }
     }
-     
     // cerrando statment
     mysqli_stmt_close($stmt);
-    
     // cerrando conexion
     mysqli_close($link);
 } else{

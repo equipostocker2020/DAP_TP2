@@ -1,10 +1,11 @@
 body {
+    /* font-family: monospace !important; */
     background: rgb(215, 214, 228);
-    background: radial-gradient(circle, rgba(215, 214, 228, 1) 2%, rgba(149, 255, 131, 0.8813900560224089) 100%, rgba(0, 212, 255, 1) 100%);
+    background: radial-gradient(circle, rgba(215, 214, 228, 1) 2%, rgba(24, 24, 24, 0.9570203081232493) 100%, rgba(0, 212, 255, 1) 100%);
 }
 
 td {
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 .titulo {
