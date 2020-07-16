@@ -3,7 +3,7 @@
 require_once "config.php";
  
 // Define variables e inicializa todas vacías
-$fecha = date("Y-d-m");
+$fecha = date("d-m-y");
 $descripcion = $tiempo  = $observaciones = $integrantes = "";
 $fecha_err = $descripcion_err = $tiempo_err = $observaciones_err = $integrantes_err = "";
  
